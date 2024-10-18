@@ -89,4 +89,21 @@ sick_rsv_data <- dbGetQuery(db_connection_pg, OPL_q) %>%
   mutate(FLEETTYPE = if_else(FLEETTYPE == "NA", NA, FLEETTYPE))
 
 
+open_time_data <- read_csv(here("data", "Open_Time.csv"))%>% 
+  rename(DATE = PAIRING_DATE,
+         SEAT = PAIRING_POSITION,
+         FLEETTYPE = EQUIPMENT) %>% 
+  select(!c(Avail, Net)) %>% 
+  mutate(FLEETTYPE =if_else(SEAT == "FA", NA, FLEETTYPE),
+         DATE = ymd(mdy(DATE)),
+         flag = if_else(FLEETTYPE == "33Y" , 1, 0),
+         flag = if_else(is.na(FLEETTYPE), 0, flag)) %>% 
+  filter(flag == 0) %>% 
+  select(!flag)
+
+
+
+transfer_data <- left_join(sick_rsv_data, open_time_data)
+
+
 
