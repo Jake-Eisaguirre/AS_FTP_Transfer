@@ -84,15 +84,16 @@ OPL_q <- "
              AND r.PAIRING_POSITION = s.PAIRING_POSITION
           ORDER BY DATE, SEAT, FLEETTYPE, BASE;"
 
+
 sick_rsv_data <- dbGetQuery(db_connection_pg, OPL_q) %>% 
   filter(!FLEETTYPE == "33Y") %>% 
   mutate(FLEETTYPE = if_else(FLEETTYPE == "NA", NA, FLEETTYPE))
 
 
 open_time_data <- read_csv(here("data", "Open_Time.csv"))%>% 
-  rename(DATE = PAIRING_DATE,
-         SEAT = PAIRING_POSITION,
-         FLEETTYPE = EQUIPMENT) %>% 
+  # rename(DATE = PAIRING_DATE,
+  #        SEAT = PAIRING_POSITION,
+  #        FLEETTYPE = EQUIPMENT) %>% 
   select(!c(Avail, Net)) %>% 
   mutate(FLEETTYPE =if_else(SEAT == "FA", NA, FLEETTYPE),
          DATE = ymd(mdy(DATE)),
