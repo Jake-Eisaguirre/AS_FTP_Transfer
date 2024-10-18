@@ -105,5 +105,6 @@ open_time_data <- read_csv(here("data", "Open_Time.csv"))%>%
 
 transfer_data <- left_join(sick_rsv_data, open_time_data)
 
+write_csv(transfer_data, "F:/INFLIGHT_RESERVE_OUTLOOK_ALL.csv")
 
 
