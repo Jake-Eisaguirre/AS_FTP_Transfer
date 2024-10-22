@@ -4,8 +4,18 @@ if (!require(librarian)){
 }
 
 # librarian downloads, if not already downloaded, and reads in needed packages
-librarian::shelf(tidyverse, here, DBI, odbc)
+librarian::shelf(tidyverse, here, DBI, odbc, rstudioapi)
 
+
+# Replace with your folder path
+folder_path_repo <- "A:/+/JAKE/AS_FTP_Transfer"  # Use double backslashes or forward slashes
+
+# Open the folder in the file explorer
+rstudioapi::viewer(folder_path_repo)
+
+folder_path_output <- "F:\\"
+
+rstudioapi::viewer(folder_path_output)
 
 # Connect to the `PLAYGROUND` database and append data if necessary
 tryCatch({
