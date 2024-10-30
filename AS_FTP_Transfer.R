@@ -82,7 +82,12 @@ tryCatch({
   
   sick_rsv_data <- dbGetQuery(db_connection_pg, OPL_q) %>% 
     filter(!FLEETTYPE == "33Y") %>% 
-    mutate(FLEETTYPE = if_else(FLEETTYPE == "NA", NA, FLEETTYPE))
+    mutate(FLEETTYPE = if_else(FLEETTYPE == "NA", NA, FLEETTYPE)) %>% 
+    group_by(SEAT, DATE, FLEETTYPE, BASE) %>% 
+    mutate(AVAILABLE_RESERVES = sum(AVAILABLE_RESERVES)) %>% 
+    filter(SICK_LEAVE == max(SICK_LEAVE)) %>% 
+    ungroup() %>% 
+    distinct()
   
   open_time_data <- read_csv(here("data", "Open_Time.csv")) %>% 
     select(!c(Avail, Net)) %>% 
